@@ -214,6 +214,7 @@ function fetchData() {
     getEvents.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}`, true);
     getEvents.setRequestHeader('access-control-allow-methods', 'PUT, GET, HEAD, POST, DELETE, OPTIONS ');
     getEvents.setRequestHeader('access-control-allow-origin', '*');
+    xhr.setRequestHeader('access-control-allow-headers', '*');
     getEvents.setRequestHeader('connection', 'keep-alive');
     getEvents.setRequestHeader('content-length', '17641');
     getEvents.setRequestHeader('content-type', 'application/json');
@@ -236,6 +237,7 @@ function showData(index = 0) {
     xhr.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}&limit=${shownItemsCount}&start=${index}`, true);
     xhr.setRequestHeader('access-control-allow-methods', 'PUT, GET, HEAD, POST, DELETE, OPTIONS ');
     xhr.setRequestHeader('access-control-allow-origin', '*');
+    xhr.setRequestHeader('access-control-allow-headers', '*');
     xhr.setRequestHeader('connection', 'keep-alive');
     xhr.setRequestHeader('content-length', '17641');
     xhr.setRequestHeader('content-type', 'application/json');
