@@ -211,7 +211,8 @@ document.getElementById('show-50').addEventListener('click', changeShownItemCoun
 
 function fetchData() {
     const getEvents = new XMLHttpRequest;
-    getEvents.open('GET', `http://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}`, true);
+    getEvents.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}`, true);
+
     getEvents.onload = function count() {
         if (this.status == 200) {
             const res = JSON.parse(this.response);
@@ -227,7 +228,7 @@ function fetchData() {
 
 function showData(index = 0) {
     const xhr = new XMLHttpRequest;
-    xhr.open('GET', `http://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}&limit=${shownItemsCount}&start=${index}`, true);
+    xhr.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}&limit=${shownItemsCount}&start=${index}`, true);
     xhr.onload = function show() {
         if (this.status == 200) {
             const res = JSON.parse(this.response);
