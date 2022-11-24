@@ -1,0 +1,145 @@
+/* General styling */
+
+*, ::before *, ::after * {
+    box-sizing: border-box;
+}
+
+:root {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+}
+
+header {
+    height: 10vh;
+}
+
+header h1 {
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    margin: 1rem;
+}
+
+p {
+    margin: 0%;
+}
+
+/* Utility classes */
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-align-center {
+    align-items: center;
+}
+
+.flex-justify-center {
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 10rem 2fr 10rem;
+    grid-template-rows: max-content;
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 90%;
+    height: 80vh;
+
+}
+
+.tag-list,
+.starter-tags,
+.events-wrapper {
+    gap: 0.3rem;
+}
+
+.event-card,
+.tag-list {
+    /* background: #eeeeee; */
+    border-radius: 5px;
+
+}
+
+.starter-tags,
+.events-wrapper,
+.page-selector,
+.guide-text {
+    grid-column: 2 /3;
+}
+
+.tag-list {
+    grid-column: 1 / 2;
+    width: auto;
+    height: fit-content;
+    max-height: 100%;
+}
+
+.page-selector,
+.pages {
+    gap: 1rem;   
+}
+
+
+
+.right-side-options {
+    grid-column: 3 / 4;
+}
+
+.tag-list,
+.events-wrapper {
+    overflow: scroll;
+    overscroll-behavior-y: contain;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.events-wrapper {
+    padding: 0 0.3rem;
+}
+
+.event-card {
+    background-color: rgb(226, 238, 250);
+    border: solid 2px rgb(133, 157, 204);
+    padding: 1rem;
+}
+
+.event-card :is(h3, p) {
+    margin: 0.4rem 0;
+}
+
+.event-card a {
+    word-break: break-all;
+}
+
+.guide-text :is(p) {
+    text-align: center;
+}
+
+
+button,
+.button-selected {
+    background: #fafafa;
+    height: fit-content;
+    border-radius: 10px;
+    padding: 0.1rem 0.3rem;
+    border: solid 2px #ccc;
+}
+
+.button-selected {
+    background: #cef;
+    border-color: rgb(141, 171, 202);
+    box-shadow: inset 0px 0px 2px 1px rgb(133, 157, 204);    
+}
