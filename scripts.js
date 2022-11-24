@@ -212,7 +212,7 @@ document.getElementById('show-50').addEventListener('click', changeShownItemCoun
 function fetchData() {
     const getEvents = new XMLHttpRequest;
     getEvents.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}`, true);
-    xhr.setRequestHeader('access-control-allow-methods', 'GET, OPTIONS'); 
+    getEvents.setRequestHeader('access-control-allow-methods', 'GET, OPTIONS'); 
 
 
     getEvents.setRequestHeader('access-control-allow-origin', 'https://tapahtumahakuhelsinki.netlify.app'); 
