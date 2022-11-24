@@ -211,7 +211,7 @@ document.getElementById('show-50').addEventListener('click', changeShownItemCoun
 
 function fetchData() {
     const getEvents = new XMLHttpRequest;
-    getEvents.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}`, true);
+    getEvents.open('GET', `http://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}`, true);
     getEvents.setRequestHeader('access-control-allow-headers', 'origin');
     getEvents.setRequestHeader('access-control-allow-methods', 'PUT, GET, HEAD, POST, DELETE, OPTIONS ');
     getEvents.setRequestHeader('access-control-allow-origin', '*');
@@ -231,7 +231,7 @@ function fetchData() {
 
 function showData(index = 0) {
     const xhr = new XMLHttpRequest;
-    xhr.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}&limit=${shownItemsCount}&start=${index}`, true);
+    xhr.open('GET', `http://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}&limit=${shownItemsCount}&start=${index}`, true);
     xhr.setRequestHeader('access-control-allow-headers', 'origin');
     xhr.setRequestHeader('access-control-allow-methods', 'PUT, GET, HEAD, POST, DELETE, OPTIONS ');
     xhr.setRequestHeader('access-control-allow-origin', '*');
