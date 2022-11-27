@@ -1,3 +1,5 @@
+/** GLOBAL VARIABLES */
+
 const starterTags =['Musiikki', 'Teatteri', 'Tanssi', 'Näyttelyt', 'Elokuvat'];
 const filteredValues = [];
 let encodedSearchStr = "";
@@ -6,24 +8,75 @@ let currentEventIndex = 0;
 let amountOfEventsFound = 0;
 
 
-const selector = document.getElementById('pages');
-const appendPageSelector = () => {
-    let pagesNeeded = Math.ceil(amountOfEventsFound/shownItemsCount);
-    selector.innerHTML = "";
-    for (var i = 0; i < pagesNeeded; i++) {
-        createPageIndex(i);    
-    };
-};
-const createPageIndex = index => {
-    newPage = document.createElement('a');
-    newPage.setAttribute('href', "javascript: void(0)");
-    newPage.setAttribute('title', "select page of listed events");
-    newPage.innerHTML = index + 1;
-    newPage.addEventListener('click',() => showData(index * shownItemsCount));
-    selector.appendChild(newPage);
+/** SITE FUNCTIONALITY (BUTTONS ETC) */
+
+// function changeShownItemCount() {   // Changes the amount of items shown at the same time according to the selection made on the site  
+//     shownItemsCount = this.value;
+//     console.log(this.value);
+//     fetchData();
+//     console.log(shownItemsCount);
+
+// };
+
+const showPageInfo = () => {
+    const info = document.getElementById('page-info');
+    if (currentEventIndex + 1 + shownItemsCount < amountOfEventsFound) {
+    info.innerHTML = `Näytetään: ${currentEventIndex + 1} - ${currentEventIndex + shownItemsCount} / ${amountOfEventsFound}`;
+    } else {
+        info.innerHTML = `Näytetään: ${currentEventIndex + 1} - ${amountOfEventsFound} / ${amountOfEventsFound}`;   
+    }
+
 };
 
-const checkIfContent = () => {
+// document.getElementById('show-10').addEventListener('click', changeShownItemCount);
+// document.getElementById('show-25').addEventListener('click', changeShownItemCount);
+// document.getElementById('show-50').addEventListener('click', changeShownItemCount);
+
+function toggleSelectedFilter() {   // Toggles styling for selected filter
+    this.classList.toggle('button-selected');
+};
+
+const starterButtons = document.querySelectorAll('.starter-tag-btn');
+for (button of starterButtons) {    // Gives functionality to the starter filter buttons on top of the page
+    button.addEventListener('click', addToFilters);
+    button.addEventListener('click', toggleSelectedFilter);
+    button.addEventListener('click', fetchData);
+};
+
+const moveHighlight = (direction = null) => {   // Moves the page index highlight when switching pages with arrows
+    const index = document.querySelector('.selection-highlight'); 
+    index.classList.remove('selection-highlight');
+    if (direction === 'prev') {
+        index.previousElementSibling.classList.add('selection-highlight');   
+    } else {
+        index.nextElementSibling.classList.add('selection-highlight');
+    };  
+};
+
+document.getElementById('prev-page').addEventListener('click', () => {  // Functionality for moving to previous result page
+    if(currentEventIndex > 0){
+        currentEventIndex = currentEventIndex - shownItemsCount;
+        showData(currentEventIndex);
+        showPageInfo();
+        moveHighlight('prev');
+        document.getElementById('event-list').scrollTop = 0;
+    };
+});
+
+document.getElementById('next-page').addEventListener('click', () => {  // Funcionality for moving to next result page
+    if(amountOfEventsFound - currentEventIndex > shownItemsCount){
+        currentEventIndex = currentEventIndex + shownItemsCount;
+        showData(currentEventIndex);
+        showPageInfo();
+        moveHighlight();
+        document.getElementById('event-list').scrollTop = 0;
+    };
+});
+
+
+
+
+const checkIfContent = () => {      // Checks if the search result div has content on it and shows the related site functions if there are results. Else hides elements and shows guide text
     const guide = document.getElementById('guide-text');
     const itemLimit = document.getElementById('shown-item-limit');
     const pageSelector = document.getElementById('page-selector');
@@ -40,52 +93,44 @@ const checkIfContent = () => {
         pageSelector.classList.add('hidden');
         tagList.classList.add('hidden');
     };
-
 };
 
-function toggleSelectedFilter() {
-    this.classList.toggle('button-selected');
-};
-
-const starterButtons = document.querySelectorAll('.starter-tag-btn');
-for (button of starterButtons) {
-    button.addEventListener('click', addToFilters);
-    button.addEventListener('click', toggleSelectedFilter);
-    button.addEventListener('click', fetchData);
-
-
-};
-
-document.getElementById('prev-page').addEventListener('click', () => {
-    if(currentEventIndex > 0){
-        showData(currentEventIndex - shownItemsCount);
+function higlightSelection() {  // Highlights the current page index
+    const indices = document.querySelectorAll('.page-index');
+    for (index of indices) {
+        index.classList.remove('selection-highlight');
     };
-});
+    this.classList.add('selection-highlight');
+};
 
-document.getElementById('next-page').addEventListener('click', () => {
-    if(amountOfEventsFound - currentEventIndex > shownItemsCount){
-        showData(currentEventIndex + shownItemsCount);
+/** ELEMENT CREATION */
+
+const selector = document.getElementById('pages');
+
+const appendPageSelector = () => {      // Adds page indices for paginated search results           
+    let pagesNeeded = Math.ceil(amountOfEventsFound/shownItemsCount);
+    selector.innerHTML = "";
+    for (var i = 0; i < pagesNeeded; i++) {
+        createPageIndex(i);    
     };
-});
+};
 
+const createPageIndex = index => {      // Creates the individual link anchor tagged buttons for the pages
+    newPage = document.createElement('a');
+    newPage.setAttribute('href', "javascript: void(0)");
+    newPage.setAttribute('title', "select page of listed events");
+    if (index === 0) {
+        newPage.className = ('page-index selection-highlight');
+    } else { newPage.className =  ('page-index')};
+    newPage.innerHTML = index + 1;
+    newPage.addEventListener('click',() => showData(index * shownItemsCount));
+    newPage.addEventListener('click', showPageInfo);
+    newPage.addEventListener('click', higlightSelection);
+    newPage.addEventListener('click', () => document.getElementById('event-list').scrollTop = 0);
+    selector.appendChild(newPage);
+};
 
-const encodeStr = () => {   // Encodes the filtered tags for making the API call with the chosen tags
-    let newStr = filteredValues.join(',');
-    encodedSearchStr = encodeURIComponent(newStr);
-}
-
-function addToFilters() {       // Adds toggled tag button' value into array 'filteredValues', which is then converted to string that can be used in API call
-    const tag = this.value;  
-    if (filteredValues.includes(tag)) {
-        const index = filteredValues.indexOf(tag);
-    filteredValues.splice(index, 1);
-    } else {
-        filteredValues.push(tag);
-        }   
-    encodeStr();
-}
-
-const appendFilterButton = (tagName) => {
+const appendFilterButton = (tagName) => {   // Creates the filter button 
     newBtn = document.createElement('button');
     newBtn.className = "tag-btn";
     newBtn.setAttribute('name', 'tag');
@@ -94,12 +139,10 @@ const appendFilterButton = (tagName) => {
     newBtn.addEventListener('click', addToFilters);
     newBtn.addEventListener('click', toggleSelectedFilter);
     newBtn.addEventListener('click', fetchData);
-
     document.getElementById('tag-list').appendChild(newBtn);
-
 };
 
-const removeFilterButtons = () => {
+const removeFilterButtons = () => {     // Removes filter buttons whose values don't match values in currently selected filters
     const buttons = document.querySelectorAll('.tag-btn');
     for (button of buttons) {
         if (!filteredValues.includes(button.value)) {
@@ -108,17 +151,16 @@ const removeFilterButtons = () => {
     };
 };
 
-const addFilterButton = (tagArr) => {
-    removeFilterButtons();
+const addFilterButton = (tagArr) => {   // Adds new filter buttons according to the result events' filter tags
+    removeFilterButtons();  // Removes all unneeded buttons first so there will be no duplicates
     for (tag in tagArr) {
         if (!filteredValues.includes(tagArr[tag]) && !starterTags.includes(tagArr[tag])) {
-            appendFilterButton(tagArr[tag]);
+            appendFilterButton(tagArr[tag]);    // Creates new buttons
         };
     };
-
 };
 
-const createEventListing = event => {
+const createEventListing = event => {   // Creates the listing for a result and appends them to the site
     const newListing = document.createElement('div');
     newListing.className = 'event-card flex flex-col';
     const heading = document.createElement('h3');
@@ -146,9 +188,28 @@ const createEventListing = event => {
     newListing.appendChild(url);
     newListing.appendChild(tags);
     document.getElementById('event-list').appendChild(newListing);
-}
+};
 
-function displayData(response) {
+
+/** DATA HANDLING */
+
+const encodeStr = () => {   // Encodes the filtered tags for making the API call with the chosen tags
+    let newStr = filteredValues.join(',');
+    encodedSearchStr = encodeURIComponent(newStr);
+};
+
+function addToFilters() {       // Adds toggled tag button's value into array 'filteredValues', which is then converted to string that can be used in API call
+    const tag = this.value;  
+    if (filteredValues.includes(tag)) {
+        const index = filteredValues.indexOf(tag);
+    filteredValues.splice(index, 1);
+    } else {
+        filteredValues.push(tag);
+        };  
+    encodeStr();    // Encodes the filter tags
+};
+
+function displayData(response) {    // Displays the event data on the site after calling the API      
     const event = document.getElementById('event-list');
     event.innerHTML = "";
     const eventData = Object.values(response.data);
@@ -158,15 +219,14 @@ function displayData(response) {
             const name = element.name.fi;
             if (!currentEvents.includes(name)) {
                 currentEvents.push(name);
-                createEventListing(element);
-
+                createEventListing(element);    // Creates the listing
             };
         };
     };
-    checkIfContent();
+    checkIfContent();   // Content check to show hidden elements related to listings
 };
 
-function CountEvents(response) {
+function CountEvents(response) {    // Counts the amount of events found and appends the page selector according to the total amount and display amount setting
     amountOfEventsFound = 0;
     const eventData = Object.values(response.data);
     if (eventData){
@@ -179,9 +239,8 @@ function CountEvents(response) {
             };
         };
     };
-
-    appendPageSelector();
-
+    appendPageSelector();   // Creates the page indices
+    showPageInfo();
 };
 
 const getTags = (response) => {     // Gets the tags from all the events after filtering
@@ -195,52 +254,31 @@ const getTags = (response) => {     // Gets the tags from all the events after f
             };
         };
     };
-    addFilterButton(tagsOfSearchedEvents.sort());
+    addFilterButton(tagsOfSearchedEvents.sort());   // Adds the filter buttons in alphabetical order
 };
 
-function changeShownItemCount() {  
-    shownItemsCount = this.value;
-    fetchData();
-    showData();
-};
 
-document.getElementById('show-10').addEventListener('click', changeShownItemCount);
-document.getElementById('show-25').addEventListener('click', changeShownItemCount);
-document.getElementById('show-50').addEventListener('click', changeShownItemCount);
+/** API CALLS */
 
-
-function fetchData() {
+function fetchData() {      // Fetches the search data only with the filters, so all results can be counted and the tags extracted. This is done seperately, so that the tags shown on the page are of from all of the results and not only from the ones currently shown on the page.
     const getEvents = new XMLHttpRequest;
     getEvents.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}`, true);
-    // getEvents.setRequestHeader('access-control-allow-methods', 'OPTIONS'); 
-
-
-    // getEvents.setRequestHeader('access-control-allow-origin', 'https://tapahtumahakuhelsinki.netlify.app'); 
-
-
 
     getEvents.onload = function count() {
         if (this.status == 200) {
             const res = JSON.parse(this.response);
-
-            CountEvents(res);
-            getTags(res);
+            CountEvents(res); 
+            getTags(res); 
         };        
     };
     getEvents.send();
-    showData();
+    showData();    
 
 };
 
-
-function showData(index = 0) {
+function showData(index = 0) {      // Shows the search results according to tags, sets the limit of items shown on one page and the result index from which results are shown (for pagination)
     const xhr = new XMLHttpRequest;
     xhr.open('GET', `https://open-api.myhelsinki.fi/v1/events/?tags_filter=${encodedSearchStr}&limit=${shownItemsCount}&start=${index}`, true);
-    // xhr.setRequestHeader('access-control-allow-methods', 'OPTIONS'); 
-
-
-    // xhr.setRequestHeader('access-control-allow-origin', 'https://tapahtumahakuhelsinki.netlify.app');
-
     xhr.onload = function show() {
         if (this.status == 200) {
             const res = JSON.parse(this.response);
@@ -248,6 +286,7 @@ function showData(index = 0) {
         };        
     };
     currentEventIndex = index;
+    // showPageInfo();
     xhr.send();
 
 };
