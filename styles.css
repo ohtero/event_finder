@@ -53,6 +53,8 @@ p {
 }
 
 
+/* Component styling */
+
 .grid-container {
     display: grid;
     grid-template-columns: 10rem 2fr 10rem;
@@ -61,7 +63,6 @@ p {
     margin: 2rem auto;
     max-width: 90%;
     height: 80vh;
-
 }
 
 .tag-list,
@@ -72,9 +73,7 @@ p {
 
 .event-card,
 .tag-list {
-
     border-radius: 5px;
-
 }
 
 .starter-tags,
@@ -96,10 +95,6 @@ p {
 .pages,
 .index-wrapper {
     gap: 1rem;   
-}
-
-.right-side-options {
-    grid-column: 3 / 4;
 }
 
 .tag-list,
@@ -135,7 +130,6 @@ p {
 .page-info {
     font-style: italic;
 }
-
 
 button,
 .button-selected {

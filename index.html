@@ -18,15 +18,22 @@
     <div class="grid-container">
         <div class="starter-tags flex flex-justify-center">
             <button class="starter-tag-btn" name="tag" value="Musiikki">Musiikki</button>
+            <button class="starter-tag-btn" name="tag" value="music">Music</button>
+            <button class="starter-tag-btn" name="tag" value="concerts">Concerts</button>
+            <button class="starter-tag-btn" name="tag" value="Concerts and clubs">Concerts and clubs</button>
             <button class="starter-tag-btn" name="tag" value="Teatteri">Teatteri</button>
+            <button class="starter-tag-btn" name="tag" value="theatre">Theatre</button>
             <button class="starter-tag-btn" name="tag" value="Tanssi">Tanssi</button>
+            <button class="starter-tag-btn" name="tag" value="dance (performing arts)">Dance</button>
             <button class="starter-tag-btn" name="tag" value="Näyttelyt">Näyttelyt</button>
+            <button class="starter-tag-btn" name="tag" value="exhibitions">Exhibitions</button>
             <button class="starter-tag-btn" name="tag" value="Elokuvat">Elokuvat</button>
+            <button class="starter-tag-btn" name="tag" value="cinema (art forms)">Cinema</button>
         </div>
         <aside id="tag-list" class="tag-list flex flex-col hidden">
         </aside>
         <content id="guide-text" class="guide-text flex flex-justify-center">
-            <p>Valitse ylhäältä vähintään yksi suodatin aloittaaksesi haku.<br>Vasemmalle ilmestyvästä listasta voit tarkentaa hakua valitsemalla hakutulosten sisältämiä suodattimia.<br>Oikealta voit valita kuinka monta hakutulosta haluat nähdä kerralla.</p>
+            <p>Valitse ylhäältä vähintään yksi suodatin aloittaaksesi haku.<br>Vasemmalle ilmestyvästä listasta voit tarkentaa hakua valitsemalla hakutulosten sisältämiä suodattimia.</p>
         </content>
         <content id="event-list" class="events-wrapper flex flex-col">
             <!-- <div id="event" class="event-card flex flex-col">
@@ -37,24 +44,6 @@
                 <p>description.url</p>      
             </div> -->
         </content>
-      
-        <aside class="right-side-options flex flex-col">
-            <div id="shown-item-limit" class="flex flex-col align-items-center hidden">
-                <p>Näytetään yhteensä:</p>
-                <label for="show-10">
-                    <input type="radio" name="radio" id="show-10" value="10" checked>
-                    10    
-                </label>    
-                <label>
-                    <input type="radio" name="radio" id="show-25" value="25">
-                    25  
-                </label>
-                    <label>
-                    <input type="radio" name="radio"id="show-50" value="50">
-                    50  
-                </label>
-            </div>
-        </aside>
     <div id="page-selector" class="page-selector flex flex-col flex-align-center hidden">
             <div id="page-info" class="page-info"></div>
             <div class="index-wrapper flex">

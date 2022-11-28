@@ -1,6 +1,6 @@
 /** GLOBAL VARIABLES */
 
-const starterTags =['Musiikki', 'Teatteri', 'Tanssi', 'Näyttelyt', 'Elokuvat'];
+const starterTags =['Musiikki', 'music', 'concerts', 'Concerts and clubs', 'Teatteri', 'theatre', 'Tanssi', 'dance (performing arts)', 'Näyttelyt', 'exhibitions', 'Elokuvat', 'cinema (art forms)'];
 const filteredValues = [];
 let encodedSearchStr = "";
 let shownItemsCount = 10;
@@ -8,29 +8,14 @@ let currentEventIndex = 0;
 let amountOfEventsFound = 0;
 
 
-/** SITE FUNCTIONALITY (BUTTONS ETC) */
-
-// function changeShownItemCount() {   // Changes the amount of items shown at the same time according to the selection made on the site  
-//     shownItemsCount = this.value;
-//     console.log(this.value);
-//     fetchData();
-//     console.log(shownItemsCount);
-
-// };
-
-const showPageInfo = () => {
+const showPageInfo = () => {    // Shows the numbers of shown items out of the total amount
     const info = document.getElementById('page-info');
     if (currentEventIndex + 1 + shownItemsCount < amountOfEventsFound) {
     info.innerHTML = `Näytetään: ${currentEventIndex + 1} - ${currentEventIndex + shownItemsCount} / ${amountOfEventsFound}`;
     } else {
         info.innerHTML = `Näytetään: ${currentEventIndex + 1} - ${amountOfEventsFound} / ${amountOfEventsFound}`;   
     }
-
 };
-
-// document.getElementById('show-10').addEventListener('click', changeShownItemCount);
-// document.getElementById('show-25').addEventListener('click', changeShownItemCount);
-// document.getElementById('show-50').addEventListener('click', changeShownItemCount);
 
 function toggleSelectedFilter() {   // Toggles styling for selected filter
     this.classList.toggle('button-selected');
@@ -73,23 +58,20 @@ document.getElementById('next-page').addEventListener('click', () => {  // Funci
     };
 });
 
-
-
-
 const checkIfContent = () => {      // Checks if the search result div has content on it and shows the related site functions if there are results. Else hides elements and shows guide text
     const guide = document.getElementById('guide-text');
-    const itemLimit = document.getElementById('shown-item-limit');
+
     const pageSelector = document.getElementById('page-selector');
     const tagList = document.getElementById('tag-list');
     if (filteredValues.length > 0) {
         guide.classList.add('hidden');
-        itemLimit.classList.remove('hidden');
+
         pageSelector.classList.remove('hidden');
         tagList.classList.remove('hidden');
     };
     if (filteredValues.length === 0) {
         guide.classList.remove('hidden');
-        itemLimit.classList.add('hidden');
+
         pageSelector.classList.add('hidden');
         tagList.classList.add('hidden');
     };
@@ -217,10 +199,8 @@ function displayData(response) {    // Displays the event data on the site after
         const currentEvents = [];
         for (element of eventData) {
             const name = element.name.fi;
-            if (!currentEvents.includes(name)) {
-                currentEvents.push(name);
-                createEventListing(element);    // Creates the listing
-            };
+            currentEvents.push(name);
+            createEventListing(element);    // Creates the listing
         };
     };
     checkIfContent();   // Content check to show hidden elements related to listings
@@ -286,7 +266,6 @@ function showData(index = 0) {      // Shows the search results according to tag
         };        
     };
     currentEventIndex = index;
-    // showPageInfo();
     xhr.send();
 
 };
